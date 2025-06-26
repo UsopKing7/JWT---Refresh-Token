@@ -5,6 +5,7 @@ import { LoginRegister } from '../services/loginRegisterService'
 import { formatError } from '../utils/formatError'
 import { schemaRegister } from '../schemas/schemaRegister'
 import { genereteToken, verifyRefresToken, generateRefresToken } from '../utils/generateToken'
+import { tokenServices } from '../services/tokenServices'
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -16,6 +17,11 @@ export const Login = async (req: Request, res: Response) => {
 
     const token = genereteToken({ id_username: userLogin?.id_username, email: userLogin?.email })
     const refresToken = generateRefresToken({ id_username: userLogin?.id_username, email: userLogin?.email })
+
+    await tokenServices.saveToken({
+      id_username: userLogin?.id_username as string,
+      token: refresToken
+    })
 
     res.cookie('access_token', token, {
       httpOnly: true,
@@ -51,8 +57,8 @@ export const Register = async (req: Request, res: Response) => {
 
     if (!result.success) throw new Error('Error de validacion' + result.error.errors.map(e => e.message).join(', '))
 
-    const { username, email, password }: UsuarioRegister = result.data
-    const newUser = await LoginRegister.register({ username, email, password })
+    const { username, email, password, role }: UsuarioRegister = result.data
+    const newUser = await LoginRegister.register({ username, email, password, role })
 
     res.status(201).json({
       message: newUser.message,

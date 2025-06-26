@@ -5,6 +5,7 @@ export interface UsuarioDB {
   username: string
   email: string
   password: string
+  role_id: UUID
 }
 
 export interface UsuairoLogin {
@@ -16,4 +17,5 @@ export interface UsuarioRegister {
   username: string
   email: string
   password: string
+  role: string
 }

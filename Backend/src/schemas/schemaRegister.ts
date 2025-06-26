@@ -28,5 +28,7 @@ export const schemaRegister = z.object({
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
       message:
         'La contraseña debe contener al menos una letra mayúscula, una letra minúscula y un número'
-    })
+    }),
+
+  role: z.string()
 })
