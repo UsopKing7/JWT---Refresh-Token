@@ -12,11 +12,10 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
+      test: ["CMD-SHELL", "pg_isready -U root -d jwt_refres"]
       interval: 5s
       timeout: 5s
       retries: 5
-
   backend:
     build: .
     restart: always
